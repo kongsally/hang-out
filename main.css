@@ -1,22 +1,26 @@
 
-h1, body {
-	font-family: 'Lusitana', serif;
+body {
+	font-family: 'Crimson Text', serif;
 	color: #0106e9;
 }
 
 h1 {
-	font-size: 48px;
+    font-family: 'Open Sans', sans-serif;
+	font-size: 44px;
+    font-weight: 100;
 	user-select: none;
     margin-bottom: 20px;
 }
 
 p#subtitle {
-    font-weight: 'bold';
+    font-family: 'Cardo', serif;
+    font-style: italic;
+    font-weight: 900;
     margin-bottom: 30px;
 }
 
 p {
-	font-size: 16px;
+	font-size: 18px;
 	user-select: none;
 }
 
@@ -27,8 +31,11 @@ p {
 }
 
 #toggle-wrapper {
-    font-weight: 'bold';
+    /*font-family: 'Open Sans', sans-serif;*/
+    font-size: 20px;
+    font-weight: 900;
     margin-top: 40px;
+    /*text-transform: uppercase;*/
 }
 
 #hang {
@@ -49,6 +56,10 @@ label {
 	padding-bottom: 20px;
 }
 
-#clear-button{
-	margin-top: 20px;
+#clear-button {
+    background: #0106e9;
+    color: #fff;
+	margin-top: 50px;
+    text-align: center;
+    width: 200px;
 }
