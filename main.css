@@ -1,5 +1,5 @@
 
-body {
+h1, body {
 	font-family: 'Lusitana', serif;
 	color: #0106e9;
 }
@@ -7,6 +7,12 @@ body {
 h1 {
 	font-size: 48px;
 	user-select: none;
+    margin-bottom: 20px;
+}
+
+p#subtitle {
+    font-weight: 'bold';
+    margin-bottom: 30px;
 }
 
 p {
@@ -18,6 +24,11 @@ p {
 	position: fixed;
 	padding-left: 50px;
 	width: 250px;
+}
+
+#toggle-wrapper {
+    font-weight: 'bold';
+    margin-top: 40px;
 }
 
 #hang {
