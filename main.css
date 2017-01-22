@@ -56,10 +56,17 @@ label {
 	padding-bottom: 20px;
 }
 
-#clear-button {
-    background: #0106e9;
-    color: #fff;
+#clear-button, #play-button, #stop-button {
+    background: #fff;
+    border: 1px solid #0106e9;
+    color: #0106e9;
+    height: 40px;
 	margin-top: 50px;
-    text-align: center;
-    width: 200px;
+    width: 78px;
+}
+
+#clear-button:hover, #play-button:hover, #stop-button:hover {
+    background: #0106e9;
+    border: 1px solid #0106e9;
+    color: #fff;
 }
