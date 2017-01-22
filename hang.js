@@ -184,22 +184,14 @@ function drawLines() {
 
 function drawPattern() {
 
-	canvas.fillStyle = "#ffffff";
-	canvas.beginPath();
-	canvas.arc(noteCenters[crossPattern[0]].x, 
-		noteCenters[crossPattern[0]].y,
-			5, 
-			0, 2*Math.PI, true);
-	canvas.fill();
-
-	canvas.strokeStyle = crossPatternColor;
+	canvas.fillStyle = crossPatternColor;
 	canvas.lineWidth = 2;
 	canvas.beginPath();
 	canvas.arc(noteCenters[crossPattern[0]].x, 
 		noteCenters[crossPattern[0]].y,
-			5, 
+			2, 
 			0, 2*Math.PI, true);
-	canvas.stroke();
+	canvas.fill();
 
 	for (var i = 1; i < crossPattern.length; i++) {
 
@@ -213,7 +205,7 @@ function drawPattern() {
 		canvas.beginPath();
 		canvas.arc(noteCenters[noteIndex].x, 
 			noteCenters[noteIndex].y,
-				5, 
+				2, 
 				0, 2*Math.PI, true);
 		canvas.fill();
 
