@@ -193,16 +193,8 @@ function noteIntersecion(mx, my) {
 	if (intersected > -1) {
 		console.log(intersected);
 		selectedNotes.push(intersected);
-		canvas.fillStyle = colors[1];
-		canvas.beginPath();
-		var circleX = noteCenters[1].x + offSet * Math.cos(0);
-		var circleY = noteCenters[1].y + offSet * Math.sin(0);
-		canvas.arc(circleX, circleY,
-			noteRadius, 
-			0, 2*Math.PI, true);
-		canvas.fill();
-
 		noteSounds[intersected].cloneNode().play();
+		canvas.beginPath();
 		canvas.fillStyle = colors[intersected];
 		canvas.arc(noteCenters[intersected].x, 
 			noteCenters[intersected].y,
@@ -227,6 +219,14 @@ function playNotes(start, selectedNote, callback) {
     setTimeout(function () { //The timer
     	if (isPlaying) {
         	noteSounds[selectedNote].cloneNode().play();
+
+			canvas.fillStyle = colors[selectedNote];
+			canvas.beginPath();
+			canvas.arc(noteCenters[selectedNote].x, 
+				noteCenters[selectedNote].y,
+					noteRadius + 10, 
+					0, 2*Math.PI, true);
+			canvas.fill();
     	}
        
         if (start === selectedNotes.length -1) {
