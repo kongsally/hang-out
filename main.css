@@ -31,8 +31,11 @@ p {
 }
 
 #toggle-wrapper {
-    font-weight: 'bold';
+    /*font-family: 'Open Sans', sans-serif;*/
+    font-size: 20px;
+    font-weight: 900;
     margin-top: 40px;
+    /*text-transform: uppercase;*/
 }
 
 #hang {
