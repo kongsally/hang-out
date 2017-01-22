@@ -44,6 +44,7 @@ function setup() {
 function draw() {
 	clearCanvas();
     drawHang();
+    drawGrooves();
     drawNotes();
     drawLines();
 }
@@ -51,6 +52,22 @@ function draw() {
 function clearCanvas() {
 	canvas.fillStyle="rgba(255,255,255,0)";
     canvas.fillRect(0,0,width,height);
+}
+
+function setNoteCenters() {
+	noteCenters[0] = {
+		x: width/2,
+		y: height/2
+	};
+	for(var i = 1; i <= 8; i++) {
+		var theta = (i-1) * (-2*Math.PI /8);
+		var circleX = parseInt(width/2) + offSet * Math.cos(theta);
+		var circleY = parseInt(height/2) + offSet * Math.sin(theta);
+		noteCenters[i] = {
+			x: circleX,
+			y: circleY
+		};
+	}
 }
 
 function drawHang() {
@@ -77,23 +94,7 @@ function drawHang() {
 	canvas.fill();
 }
 
-function setNoteCenters() {
-	noteCenters[0] = {
-		x: width/2,
-		y: height/2
-	};
-	for(var i = 1; i <= 8; i++) {
-		var theta = (i-1) * (-2*Math.PI /8);
-		var circleX = parseInt(width/2) + offSet * Math.cos(theta);
-		var circleY = parseInt(height/2) + offSet * Math.sin(theta);
-		noteCenters[i] = {
-			x: circleX,
-			y: circleY
-		};
-	}
-}
-
-function drawNotes() {
+function drawGrooves() {
 
 	// ding groove
 	canvas.fillStyle = "rgba(40,40,40,0.2)";
@@ -105,15 +106,7 @@ function drawNotes() {
 		0, 2*Math.PI, true);
 	canvas.fill();
 
-	// ding
-	canvas.fillStyle = colors[0];
-	canvas.beginPath();
-	canvas.arc(circleX, circleY,
-		noteRadius, 
-		0, 2*Math.PI);
-	canvas.fill();
-
-	// rest of the notes
+	// other note grooves
 	for(var i = 1; i <= 8; i++) {
 		var theta = (i-1) * (-2*Math.PI /8);
 
@@ -126,6 +119,23 @@ function drawNotes() {
 			grooveRadius, 
 			0, 2*Math.PI, true);
 		canvas.fill();
+	}
+}
+
+function drawNotes() {
+	// ding
+	var circleX = parseInt(width/2);
+	var circleY = parseInt(height/2);
+	canvas.fillStyle = colors[0];
+	canvas.beginPath();
+	canvas.arc(circleX, circleY,
+		noteRadius, 
+		0, 2*Math.PI);
+	canvas.fill();
+
+	// rest of the notes
+	for(var i = 1; i <= 8; i++) {
+		var theta = (i-1) * (-2*Math.PI /8);
 
 		// draw note
 		canvas.fillStyle = colors[i];
