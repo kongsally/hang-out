@@ -1,11 +1,11 @@
 
 body {
 	font-family: 'Crimson Text', serif;
-	color: #0106e9;
+	color: #0106E9;
 }
 
 h1 {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Sintony', sans-serif;
 	font-size: 44px;
     font-weight: 100;
 	user-select: none;
@@ -31,11 +31,26 @@ p {
 }
 
 #toggle-wrapper {
-    /*font-family: 'Open Sans', sans-serif;*/
-    font-size: 20px;
     font-weight: 900;
     margin-top: 40px;
-    /*text-transform: uppercase;*/
+}
+
+span.mdl-switch__label {
+    font-family: 'Sintony', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+label#cross-switch {
+    margin-top: 10px;
+}
+
+.mdl-switch__track {
+    background: #CACACA;
+}
+
+.mdl-switch.is-checked .mdl-switch__thumb {
+    background: #0106E9;
 }
 
 #hang {
@@ -58,29 +73,40 @@ label {
 
 #clear-button, #play-button, #stop-button {
     background: #fff;
-    border: 1px solid #0106e9;
-    color: #0106e9;
+    border: 1px solid #0106E9;
+    color: #0106E9;
     height: 40px;
 	margin-top: 50px;
     width: 78px;
 }
 
 #clear-button:hover, #play-button:hover, #stop-button:hover {
-    background: #0106e9;
-    border: 1px solid #0106e9;
+    background: #0106E9;
+    border: 1px solid #0106E9;
     color: #fff;
 }
 
 #heart {
-	font-size: 16px;
-	margin-top: 4px;
+    color: #F10289;
+	font-size: 12px;
 }
+
 #footer {
-	width: 100%;
-	font-size: 20px;
 	bottom: 0;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 12px;
 	left: 0;
+    line-height: 3em;
+    margin-left: 50px;
 	position: fixed;
-	text-align: center;
-	line-height: 3em;
+	text-align: left;
+    width: 100%;
+}
+a {
+    color: #0106E9;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #F10289;
 }
