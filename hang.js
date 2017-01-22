@@ -3,6 +3,8 @@ var canvas;
 var width, height; // canvas width and height
 var colors = ["#F771BC", "#8A62D1", "#E3CEEE", "#FFFFFF", "#C9A5E0", "#9B4CC3", "#D51E9E", "#F10289", "#A434B6"];
 var offSet = 140;
+var crossPatternColor = "#FFE700";
+var crossPattern = [7,6,8,5,1,4,2,3];
 
 var noteRadius = 13;
 var grooveRadius = 35;
@@ -14,6 +16,9 @@ var selectedNotes = [];
 var t = 0;
 var isPlaying = false;
 var lastNotePlayed = true;
+var strokeWidth = 5;
+
+var patternToggle;
 
 function setup() {
 	a3 = document.getElementById("a3");
@@ -25,6 +30,7 @@ function setup() {
 	bflat4 = document.getElementById("bflat4");
 	csharp5 = document.getElementById("csharp5");
 	d5 = document.getElementById("d5");
+	patternToggle = document.getElementById("cross-pattern").parentElement;
 
 	noteSounds = [a3, a4, csharp5, d5, bflat4, g4, eflat4, d4, fsharp4];
 
@@ -37,7 +43,7 @@ function setup() {
 
     setNoteCenters();
 
-    return setInterval(draw, 100);
+    return setInterval(draw, 50);
 
 }
 
@@ -47,6 +53,10 @@ function draw() {
     drawGrooves();
     drawNotes();
     drawLines();
+    if (patternToggle.classList.contains("is-checked")) {
+    	  drawPattern();
+    }
+  
 }
 
 function clearCanvas() {
@@ -163,8 +173,52 @@ function drawLines() {
 		gradient.addColorStop(0,colors[pNoteIndex]);
 		gradient.addColorStop(1,colors[noteIndex]);
 		canvas.strokeStyle=gradient;
-		canvas.lineWidth = 5;
+		canvas.lineWidth = strokeWidth;
 
+		canvas.beginPath();
+		canvas.moveTo(prevNoteCenter.x, prevNoteCenter.y);
+		canvas.lineTo(currentNoteCenter.x, currentNoteCenter.y);
+		canvas.stroke();
+	}
+}
+
+function drawPattern() {
+
+	canvas.fillStyle = "#ffffff";
+	canvas.beginPath();
+	canvas.arc(noteCenters[crossPattern[0]].x, 
+		noteCenters[crossPattern[0]].y,
+			5, 
+			0, 2*Math.PI, true);
+	canvas.fill();
+
+	canvas.strokeStyle = crossPatternColor;
+	canvas.lineWidth = 2;
+	canvas.beginPath();
+	canvas.arc(noteCenters[crossPattern[0]].x, 
+		noteCenters[crossPattern[0]].y,
+			5, 
+			0, 2*Math.PI, true);
+	canvas.stroke();
+
+	for (var i = 1; i < crossPattern.length; i++) {
+
+		var pNoteIndex = crossPattern[i-1];
+		var noteIndex = crossPattern[i];
+		var prevNoteCenter = noteCenters[pNoteIndex];
+		var currentNoteCenter = noteCenters[noteIndex];
+
+		canvas.fillStyle = crossPatternColor;
+		canvas.lineWidth = strokeWidth;
+		canvas.beginPath();
+		canvas.arc(noteCenters[noteIndex].x, 
+			noteCenters[noteIndex].y,
+				5, 
+				0, 2*Math.PI, true);
+		canvas.fill();
+
+		canvas.strokeStyle = crossPatternColor;
+		canvas.lineWidth = strokeWidth;
 		canvas.beginPath();
 		canvas.moveTo(prevNoteCenter.x, prevNoteCenter.y);
 		canvas.lineTo(currentNoteCenter.x, currentNoteCenter.y);
@@ -191,6 +245,7 @@ function noteIntersecion(mx, my) {
 	}
 
 	if (intersected > -1) {
+		isPlaying = false;
 		console.log(intersected);
 		selectedNotes.push(intersected);
 		noteSounds[intersected].cloneNode().play();
