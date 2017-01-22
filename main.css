@@ -70,3 +70,17 @@ label {
     border: 1px solid #0106e9;
     color: #fff;
 }
+
+#heart {
+	font-size: 16px;
+	margin-top: 4px;
+}
+#footer {
+	width: 100%;
+	font-size: 20px;
+	bottom: 0;
+	left: 0;
+	position: fixed;
+	text-align: center;
+	line-height: 3em;
+}
