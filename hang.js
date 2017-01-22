@@ -12,6 +12,8 @@ var noteSounds = [];
 var selectedNotes = [];
 
 var t = 0;
+var isPlaying = false;
+var lastNotePlayed = true;
 
 function setup() {
 	a3 = document.getElementById("a3");
@@ -35,20 +37,37 @@ function setup() {
 
     setNoteCenters();
 
-    return setInterval(draw, 30);
+    return setInterval(draw, 100);
 
 }
 
 function draw() {
 	clearCanvas();
     drawHang();
+    drawGrooves();
     drawNotes();
     drawLines();
 }
 
 function clearCanvas() {
-	canvas.fillStyle="#ffffff";
+	canvas.fillStyle="rgba(255,255,255,0)";
     canvas.fillRect(0,0,width,height);
+}
+
+function setNoteCenters() {
+	noteCenters[0] = {
+		x: width/2,
+		y: height/2
+	};
+	for(var i = 1; i <= 8; i++) {
+		var theta = (i-1) * (-2*Math.PI /8);
+		var circleX = parseInt(width/2) + offSet * Math.cos(theta);
+		var circleY = parseInt(height/2) + offSet * Math.sin(theta);
+		noteCenters[i] = {
+			x: circleX,
+			y: circleY
+		};
+	}
 }
 
 function drawHang() {
@@ -75,23 +94,7 @@ function drawHang() {
 	canvas.fill();
 }
 
-function setNoteCenters() {
-	noteCenters[0] = {
-		x: width/2,
-		y: height/2
-	};
-	for(var i = 1; i <= 8; i++) {
-		var theta = (i-1) * (-2*Math.PI /8);
-		var circleX = parseInt(width/2) + offSet * Math.cos(theta);
-		var circleY = parseInt(height/2) + offSet * Math.sin(theta);
-		noteCenters[i] = {
-			x: circleX,
-			y: circleY
-		};
-	}
-}
-
-function drawNotes() {
+function drawGrooves() {
 
 	// ding groove
 	canvas.fillStyle = "rgba(40,40,40,0.2)";
@@ -103,15 +106,7 @@ function drawNotes() {
 		0, 2*Math.PI, true);
 	canvas.fill();
 
-	// ding
-	canvas.fillStyle = colors[0];
-	canvas.beginPath();
-	canvas.arc(circleX, circleY,
-		noteRadius, 
-		0, 2*Math.PI);
-	canvas.fill();
-
-	// rest of the notes
+	// other note grooves
 	for(var i = 1; i <= 8; i++) {
 		var theta = (i-1) * (-2*Math.PI /8);
 
@@ -124,6 +119,23 @@ function drawNotes() {
 			grooveRadius, 
 			0, 2*Math.PI, true);
 		canvas.fill();
+	}
+}
+
+function drawNotes() {
+	// ding
+	var circleX = parseInt(width/2);
+	var circleY = parseInt(height/2);
+	canvas.fillStyle = colors[0];
+	canvas.beginPath();
+	canvas.arc(circleX, circleY,
+		noteRadius, 
+		0, 2*Math.PI);
+	canvas.fill();
+
+	// rest of the notes
+	for(var i = 1; i <= 8; i++) {
+		var theta = (i-1) * (-2*Math.PI /8);
 
 		// draw note
 		canvas.fillStyle = colors[i];
@@ -139,19 +151,23 @@ function drawNotes() {
 
 function drawLines() {
 	for (var i = 1; i < selectedNotes.length; i++) {
+
 		var pNoteIndex = selectedNotes[i-1];
 		var noteIndex = selectedNotes[i];
+		var prevNoteCenter = noteCenters[pNoteIndex];
+		var currentNoteCenter = noteCenters[noteIndex];
+
 		var gradient=canvas.createLinearGradient(
-			noteCenters[pNoteIndex].x, noteCenters[pNoteIndex].y,
-			noteCenters[noteIndex].x, noteCenters[noteIndex].y);
+			prevNoteCenter.x, prevNoteCenter.y,
+			currentNoteCenter.x, currentNoteCenter.y);
 		gradient.addColorStop(0,colors[pNoteIndex]);
 		gradient.addColorStop(1,colors[noteIndex]);
 		canvas.strokeStyle=gradient;
 		canvas.lineWidth = 5;
 
 		canvas.beginPath();
-		canvas.moveTo(noteCenters[pNoteIndex].x, noteCenters[pNoteIndex].y);
-		canvas.lineTo(noteCenters[noteIndex].x, noteCenters[noteIndex].y);
+		canvas.moveTo(prevNoteCenter.x, prevNoteCenter.y);
+		canvas.lineTo(currentNoteCenter.x, currentNoteCenter.y);
 		canvas.stroke();
 	}
 }
@@ -160,7 +176,6 @@ function drawLines() {
 function vectorLength(x, y) {
 	var xd = x - width/2;
 	var yd = y - height/2;
-
 	return Math.sqrt(xd*xd + yd*yd);
 }
 
@@ -178,16 +193,8 @@ function noteIntersecion(mx, my) {
 	if (intersected > -1) {
 		console.log(intersected);
 		selectedNotes.push(intersected);
-		canvas.fillStyle = colors[1];
-		canvas.beginPath();
-		var circleX = noteCenters[1].x + offSet * Math.cos(0);
-		var circleY = noteCenters[1].y + offSet * Math.sin(0);
-		canvas.arc(circleX, circleY,
-			noteRadius, 
-			0, 2*Math.PI, true);
-		canvas.fill();
-
 		noteSounds[intersected].cloneNode().play();
+		canvas.beginPath();
 		canvas.fillStyle = colors[intersected];
 		canvas.arc(noteCenters[intersected].x, 
 			noteCenters[intersected].y,
@@ -198,6 +205,7 @@ function noteIntersecion(mx, my) {
 }
 
 function reset() {
+	stop();
 	selectedNotes = [];
 }
 
@@ -205,4 +213,45 @@ function onClick(e) {
 	var mx = e.layerX;
 	var my = e.layerY;
 	noteIntersecion(mx, my);
+}
+
+function playNotes(start, selectedNote, callback) {
+    setTimeout(function () { //The timer
+    	if (isPlaying) {
+        	noteSounds[selectedNote].cloneNode().play();
+
+			canvas.fillStyle = colors[selectedNote];
+			canvas.beginPath();
+			canvas.arc(noteCenters[selectedNote].x, 
+				noteCenters[selectedNote].y,
+					noteRadius + 10, 
+					0, 2*Math.PI, true);
+			canvas.fill();
+    	}
+       
+        if (start === selectedNotes.length -1) {
+    		play();
+   		}
+    }, (start+1)*400); //needs the "start*" or else all the timers will run at 3000ms
+
+}
+
+function play() {
+	if (isPlaying) {
+		for (var i = 0; i < selectedNotes.length; i++) {
+			var selectedNote = selectedNotes[i];
+			playNotes(i, selectedNote);
+		}
+	}
+}
+
+function startPlay() {
+	if (!isPlaying) {
+		isPlaying = true;
+		play();
+	}
+}
+
+function stop() {
+	isPlaying = false;
 }
