@@ -12,6 +12,8 @@ var noteSounds = [];
 var selectedNotes = [];
 
 var t = 0;
+var isPlaying = false;
+var lastNotePlayed = true;
 
 function setup() {
 	a3 = document.getElementById("a3");
@@ -35,7 +37,7 @@ function setup() {
 
     setNoteCenters();
 
-    return setInterval(draw, 30);
+    return setInterval(draw, 100);
 
 }
 
@@ -47,7 +49,7 @@ function draw() {
 }
 
 function clearCanvas() {
-	canvas.fillStyle="#ffffff";
+	canvas.fillStyle="rgba(255,255,255,0)";
     canvas.fillRect(0,0,width,height);
 }
 
@@ -139,19 +141,23 @@ function drawNotes() {
 
 function drawLines() {
 	for (var i = 1; i < selectedNotes.length; i++) {
+
 		var pNoteIndex = selectedNotes[i-1];
 		var noteIndex = selectedNotes[i];
+		var prevNoteCenter = noteCenters[pNoteIndex];
+		var currentNoteCenter = noteCenters[noteIndex];
+
 		var gradient=canvas.createLinearGradient(
-			noteCenters[pNoteIndex].x, noteCenters[pNoteIndex].y,
-			noteCenters[noteIndex].x, noteCenters[noteIndex].y);
+			prevNoteCenter.x, prevNoteCenter.y,
+			currentNoteCenter.x, currentNoteCenter.y);
 		gradient.addColorStop(0,colors[pNoteIndex]);
 		gradient.addColorStop(1,colors[noteIndex]);
 		canvas.strokeStyle=gradient;
 		canvas.lineWidth = 5;
 
 		canvas.beginPath();
-		canvas.moveTo(noteCenters[pNoteIndex].x, noteCenters[pNoteIndex].y);
-		canvas.lineTo(noteCenters[noteIndex].x, noteCenters[noteIndex].y);
+		canvas.moveTo(prevNoteCenter.x, prevNoteCenter.y);
+		canvas.lineTo(currentNoteCenter.x, currentNoteCenter.y);
 		canvas.stroke();
 	}
 }
@@ -160,7 +166,6 @@ function drawLines() {
 function vectorLength(x, y) {
 	var xd = x - width/2;
 	var yd = y - height/2;
-
 	return Math.sqrt(xd*xd + yd*yd);
 }
 
@@ -198,6 +203,7 @@ function noteIntersecion(mx, my) {
 }
 
 function reset() {
+	stop();
 	selectedNotes = [];
 }
 
@@ -205,4 +211,37 @@ function onClick(e) {
 	var mx = e.layerX;
 	var my = e.layerY;
 	noteIntersecion(mx, my);
+}
+
+function playNotes(start, selectedNote, callback) {
+    setTimeout(function () { //The timer
+    	if (isPlaying) {
+        	noteSounds[selectedNote].cloneNode().play();
+    	}
+       
+        if (start === selectedNotes.length -1) {
+    		play();
+   		}
+    }, (start+1)*400); //needs the "start*" or else all the timers will run at 3000ms
+
+}
+
+function play() {
+	if (isPlaying) {
+		for (var i = 0; i < selectedNotes.length; i++) {
+			var selectedNote = selectedNotes[i];
+			playNotes(i, selectedNote);
+		}
+	}
+}
+
+function startPlay() {
+	if (!isPlaying) {
+		isPlaying = true;
+		play();
+	}
+}
+
+function stop() {
+	isPlaying = false;
 }
