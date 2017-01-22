@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hang</title>
+  <link href="https://fonts.googleapis.com/css?family=Lusitana" rel="stylesheet">
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+  <link rel="stylesheet" href="main.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.8.1/math.min.js"></script>
+  <script src="hang.js"></script>
+</head>
+<body onload="setup();">
+  <audio id="a3" src="assets/hang_a3.wav" preload></audio>
+  <audio id="d4" src="assets/hang_d4.wav" preload></audio>
+  <audio id="eflat4" src="assets/hang_eflat4.wav" preload></audio>
+  <audio id="fsharp4" src="assets/hang_fsharp4.wav" preload></audio>
+  <audio id="g4" src="assets/hang_g4.wav" preload></audio>
+  <audio id="a4" src="assets/hang_a4.wav" preload></audio>
+  <audio id="bflat4" src="assets/hang_bflat4.wav" preload></audio>
+  <audio id="csharp5" src="assets/hang_csharp5.wav" preload></audio>
+  <audio id="d5" src="assets/hang_d5.wav" preload></audio>
+
+  <div id="desc-wrapper">
+  <h1> Hang <br> <p>[haŋ] · German</p></h1>
+  
+  <p>A hollow steel musical instrument (idiophone class), played by hands.</p>
+  <p>The notes are laid out in a cross pattern, with the center note called the Ding, or the top of the instrument.</p>
+
+  <div id="toggle-wrapper">
+   
+      <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-1">
+      <span class="mdl-switch__label fix-mdl-switch">Note Label On</span>
+      <input type="checkbox" id="switch-1" class="mdl-switch__input">
+      </label>
+
+      <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-2">
+      <span class="mdl-switch__label fix-mdl-switch">Cross Pattern On</span>
+      <input type="checkbox" id="switch-2" class="mdl-switch__input">
+      </label>
+    
+  </div>
+  </div>
+
+
+    <canvas id="hang" width='500px' height='500px'></canvas>
+
+</body>
+</html>
