@@ -9,6 +9,7 @@ var grooveRadius = 35;
 
 var noteCenters = [];
 var noteSounds = [];
+var selectedNotes = [];
 
 var t = 0;
 
@@ -42,6 +43,7 @@ function draw() {
 	clearCanvas();
     drawHang();
     drawNotes();
+    drawLines();
 }
 
 function clearCanvas() {
@@ -135,6 +137,25 @@ function drawNotes() {
 	}
 }
 
+function drawLines() {
+	for (var i = 1; i < selectedNotes.length; i++) {
+		var pNoteIndex = selectedNotes[i-1];
+		var noteIndex = selectedNotes[i];
+		var gradient=canvas.createLinearGradient(
+			noteCenters[pNoteIndex].x, noteCenters[pNoteIndex].y,
+			noteCenters[noteIndex].x, noteCenters[noteIndex].y);
+		gradient.addColorStop(0,colors[pNoteIndex]);
+		gradient.addColorStop(1,colors[noteIndex]);
+		canvas.strokeStyle=gradient;
+		canvas.lineWidth = 5;
+
+		canvas.beginPath();
+		canvas.moveTo(noteCenters[pNoteIndex].x, noteCenters[pNoteIndex].y);
+		canvas.lineTo(noteCenters[noteIndex].x, noteCenters[noteIndex].y);
+		canvas.stroke();
+	}
+}
+
 
 function vectorLength(x, y) {
 	var xd = x - width/2;
@@ -156,6 +177,7 @@ function noteIntersecion(mx, my) {
 
 	if (intersected > -1) {
 		console.log(intersected);
+		selectedNotes.push(intersected);
 		canvas.fillStyle = colors[1];
 		canvas.beginPath();
 		var circleX = noteCenters[1].x + offSet * Math.cos(0);
@@ -175,9 +197,12 @@ function noteIntersecion(mx, my) {
 	}
 }
 
+function reset() {
+	selectedNotes = [];
+}
+
 function onClick(e) {
 	var mx = e.layerX;
 	var my = e.layerY;
-
 	noteIntersecion(mx, my);
 }
