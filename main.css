@@ -1,27 +1,30 @@
 
 body {
-	font-family: 'Crimson Text', serif;
+    font-family: 'Rubik', sans-serif;
 	color: #0106E9;
 }
 
 h1 {
-    font-family: 'Sintony', sans-serif;
-	font-size: 44px;
-    font-weight: 100;
+    font-family: 'Rubik', sans-serif;
+	font-size: 3em;
+    font-weight: 700;
+    text-transform: uppercase;
 	user-select: none;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 p#subtitle {
-    font-family: 'Cardo', serif;
-    font-style: italic;
-    font-weight: 900;
-    margin-bottom: 30px;
+    font-family: 'Roboto Mono';
+    font-size: 1.1em;
+    font-weight: 700;
+    margin-bottom: 20px;
 }
 
 p {
-	font-size: 18px;
+    font-size: 1.1em;
+    line-height: 1.4em;
 	user-select: none;
+    width: 300px;
 }
 
 #desc-wrapper {
@@ -32,12 +35,12 @@ p {
 
 #toggle-wrapper {
     font-weight: 900;
-    margin-top: 40px;
+    margin-top: 80px;
 }
 
 span.mdl-switch__label {
-    font-family: 'Sintony', sans-serif;
-    font-size: 16px;
+    font-family: 'Roboto Mono', sans-serif;
+    font-size: 0.8em;
     font-weight: 700;
 }
 
@@ -75,9 +78,13 @@ label {
     background: #fff;
     border: 1px solid #0106E9;
     color: #0106E9;
-    height: 40px;
-	margin-top: 50px;
-    width: 78px;
+    height: 30px;
+	margin-top: 80px;
+    width: 81px;
+}
+
+i.button-funct {
+    margin-top: -10px;
 }
 
 #clear-button:hover, #play-button:hover, #stop-button:hover {
@@ -93,7 +100,7 @@ label {
 
 #footer {
 	bottom: 0;
-    font-family: 'Open Sans', sans-serif;
+    /*font-family: 'Rubik', sans-serif;*/
     font-size: 12px;
 	left: 0;
     line-height: 3em;
