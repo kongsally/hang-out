@@ -43,6 +43,13 @@ function setup() {
 
     setNoteCenters();
 
+    //add rest on space 
+    document.body.onkeyup = function(e){
+	    if(e.keyCode == 32){
+	       addRest();
+	    }
+	}
+
     return setInterval(draw, 50);
 
 }
@@ -162,6 +169,10 @@ function drawNotes() {
 function drawLines() {
 	for (var i = 1; i < selectedNotes.length; i++) {
 
+		if (selectedNotes[i] === -1 || selectedNotes[i-1] === -1) {
+			continue;
+		}
+
 		var pNoteIndex = selectedNotes[i-1];
 		var noteIndex = selectedNotes[i];
 		var prevNoteCenter = noteCenters[pNoteIndex];
@@ -264,8 +275,8 @@ function onClick(e) {
 
 function playNotes(start, selectedNote, callback) {
     setTimeout(function () { //The timer
-    	if (isPlaying) {
-        	noteSounds[selectedNote].cloneNode().play();
+    	if (isPlaying && selectedNote != -1) {
+			noteSounds[selectedNote].cloneNode().play();
 
 			canvas.fillStyle = colors[selectedNote];
 			canvas.beginPath();
@@ -273,7 +284,7 @@ function playNotes(start, selectedNote, callback) {
 				noteCenters[selectedNote].y,
 					noteRadius + 10, 
 					0, 2*Math.PI, true);
-			canvas.fill();
+			canvas.fill();	
     	}
        
         if (start === selectedNotes.length -1) {
@@ -290,6 +301,11 @@ function play() {
 			playNotes(i, selectedNote);
 		}
 	}
+}
+
+function addRest(){
+	isPlaying = false;
+	selectedNotes.push(-1);
 }
 
 function startPlay() {
